@@ -42,6 +42,12 @@ def filter_by_job_type(jobs, job_type):
 
 
 def get_unique_industries(path):
+    unique_data = set()
+    data = read(path)
+    for industries in data:
+        if industries["industry"] != "":
+            unique_data.add(industries["industry"])
+    return unique_data
     """Checks all different industries and returns a list of them
 
     Must call `read`
