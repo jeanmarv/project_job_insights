@@ -32,20 +32,6 @@ def filter_by_industry(jobs, industry):
         if alljobs["industry"] == industry:
             job_type_data.append(alljobs)
     return job_type_data
-    """Filters a list of jobs by industry
-
-    Parameters
-    ----------
-    jobs : list
-        List of jobs to be filtered
-    industry : str
-        Industry for the list filter
-
-    Returns
-    -------
-    list
-        List of jobs with provided industry
-    """
 
 
 def get_max_salary(path):
@@ -70,7 +56,28 @@ def get_min_salary(path):
     return salaries_data[0]
 
 
+def salary_error_tester(minsal, maxsal, sal):
+    if minsal == "" or\
+       minsal == "invalid" or\
+       maxsal == "" or\
+       maxsal == "invalid":
+        raise ValueError
+    elif (type(minsal) != int or
+          type(maxsal) != int or
+          type(sal) != int):
+        raise ValueError
+    elif minsal > maxsal:
+        raise ValueError
+
+
 def matches_salary_range(job, salary):
+    try:
+        min_salary = job["min_salary"]
+        max_salary = job["max_salary"]
+        salary_error_tester(min_salary, max_salary, salary)
+        return min_salary <= salary <= max_salary
+    except KeyError:
+        raise ValueError
     """Checks if a given salary is in the salary range of a given job
 
     Parameters
